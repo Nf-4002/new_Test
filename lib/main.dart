@@ -1,3 +1,4 @@
+import 'package:afghan_backpack/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'screens/splashScreen.dart';
 
@@ -14,9 +15,14 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Afghan BackPack',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: kBlueColor,
+        scaffoldBackgroundColor: kLighterShadeForBackground,
+        appBarTheme: AppBarTheme(
+          backgroundColor: kDarkBlueGreyColor,
+          elevation: 4,
+        ),
       ),
-      home: const Page1(), // Ensure Page1 is properly imported
+      home: const Splashscreen(),
     );
   }
 }

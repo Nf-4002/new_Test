@@ -1,37 +1,10 @@
-import 'package:afghan_backpack/screens/welcomeScreen3.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:afghan_backpack/screens/herat_screens/herat.dart';
 import 'package:flutter/material.dart';
+import 'package:afghan_backpack/constants/colors.dart';
+import 'package:afghan_backpack/constants/icons.dart';
+import 'package:afghan_backpack/screens/profilePage.dart';
 
 class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.lightBlue[100],
-        elevation: 0,
-        automaticallyImplyLeading:
-            false, // <- This removes the default back arrow
-        leading: IconButton(
-          icon: Icon(Icons.list, color: Colors.black87),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => Welcomescreen3()),
-            );
-          },
-        ),
-        title: Text(
-          'Popular Cities of Afghanistan',
-          style: TextStyle(color: Colors.black87),
-        ),
-      ),
-    );
-  }
-}
-
-class PopularCitiesPage extends StatelessWidget {
-  static const routeName = '/popular-cities';
-
   final List<Map<String, String>> cities = [
     {
       'name': 'Herat',
@@ -55,28 +28,39 @@ class PopularCitiesPage extends StatelessWidget {
     },
   ];
 
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar:  AppBar(
-    backgroundColor: Colors.lightBlue[100],
-      elevation: 0,
-      automaticallyImplyLeading: false, // <- This removes the default back arrow
-      leading: IconButton(
-        icon: Icon(Icons.list, color: Colors.black87),
-        onPressed: () {
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(builder: (context) => Welcomescreen3()),
-          );
-        },
+      key: _scaffoldKey,
+      drawer: _buildDrawer(context),
+      appBar: AppBar(
+        backgroundColor: kButtonBackgroundColor,
+        elevation: 0,
+        leading: IconButton(
+          icon: kListIcon,
+          onPressed: () {
+            _scaffoldKey.currentState?.openDrawer();
+          },
+        ),
+        title: const Text(
+          'Popular Cities of Afghanistan',
+          style: TextStyle(color: Colors.white),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.account_circle,
+                color: kListIconColor, size: 45),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfilePage()),
+              );
+            },
+          ),
+        ],
       ),
-      title: Text(
-        'Popular Cities of Afghanistan',
-        style: TextStyle(color: Colors.black87),
-      ),
-    ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: ListView.builder(
@@ -85,14 +69,54 @@ class PopularCitiesPage extends StatelessWidget {
             final city = cities[index];
             return Padding(
               padding: const EdgeInsets.all(5),
-              child: CityCard(
-                name: city['name']!,
-                location: city['location']!,
-                image: city['image']!,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const HeratCityPage()),
+                  );
+                },
+                child: CityCard(
+                  name: city['name']!,
+                  location: city['location']!,
+                  image: city['image']!,
+                ),
               ),
             );
           },
         ),
+      ),
+    );
+  }
+
+  Drawer _buildDrawer(BuildContext context) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: <Widget>[
+          const UserAccountsDrawerHeader(
+            accountName: Text('Narges Farahi'),
+            accountEmail: Text('narges.farahi_354@example.com'),
+            currentAccountPicture: CircleAvatar(
+              backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+            ),
+          ),
+          ListTile(
+              leading: const Icon(Icons.home),
+              title: const Text('Home'),
+              onTap: () => Navigator.pop(context)),
+          const ListTile(
+              leading: Icon(Icons.favorite), title: Text('Favorites')),
+          const ListTile(leading: Icon(Icons.star), title: Text('Stars')),
+          const ListTile(leading: Icon(Icons.person), title: Text('Profile')),
+          const ListTile(leading: Icon(Icons.call), title: Text('Call Us')),
+          const ListTile(
+              leading: Icon(Icons.settings), title: Text('Settings')),
+          const Divider(),
+          const ListTile(leading: Icon(Icons.help), title: Text('Help')),
+          const ListTile(leading: Icon(Icons.logout), title: Text('Log out')),
+        ],
       ),
     );
   }
@@ -119,7 +143,6 @@ class CityCard extends StatelessWidget {
         padding: const EdgeInsets.all(17),
         child: Row(
           children: [
-            // Big city image
             ClipRRect(
               borderRadius: BorderRadius.circular(16),
               child: Image.asset(
@@ -130,34 +153,32 @@ class CityCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 16),
-
-// Text info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    name,
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    location,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey[700],
-                    ),
+                  Text(name,
+                      style: const TextStyle(
+                          fontSize: 20, fontWeight: FontWeight.bold)),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(kLocationIcon, color: kLocationColor, size: 18),
+                      const SizedBox(width: 4),
+                      Text(
+                        location,
+                        style: TextStyle(fontSize: 16, color: kLocationColor),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 8),
                   Row(
-                    children: [
-                      Icon(Icons.star, color: Colors.amber, size: 16),
-                      Icon(Icons.star, color: Colors.amber, size: 16),
-                      Icon(Icons.star, color: Colors.amber, size: 16),
-                      Icon(Icons.star, color: Colors.amber, size: 16),
-                      Icon(Icons.star_half, color: Colors.amber, size: 16),
+                    children: const [
+                      Icon(kStarIcon, color: kStarIconColor, size: 16),
+                      Icon(kStarIcon, color: kStarIconColor, size: 16),
+                      Icon(kStarIcon, color: kStarIconColor, size: 16),
+                      Icon(kStarIcon, color: kStarIconColor, size: 16),
+                      Icon(kStarHalfIcon, color: kStarIconColor, size: 16),
                       SizedBox(width: 4),
                       Text("4.8"),
                     ],
@@ -170,4 +191,83 @@ class CityCard extends StatelessWidget {
       ),
     );
   }
+}
+
+Drawer buildDrawer(BuildContext context) {
+  return Drawer(
+    child: Column(
+      children: [
+        DrawerHeader(
+          decoration: BoxDecoration(
+            color: kButtonBackgroundColor,
+            image: const DecorationImage(
+              image: NetworkImage(
+                  'https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=800&q=60'),
+              fit: BoxFit.cover,
+              colorFilter: ColorFilter.mode(Colors.black54, BlendMode.darken),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
+              CircleAvatar(
+                radius: 30,
+                backgroundImage:
+                    NetworkImage('https://via.placeholder.com/150'),
+              ),
+              SizedBox(height: 10),
+              Text(
+                'Narges Farahi',
+                style: TextStyle(color: Colors.white, fontSize: 18),
+              ),
+              Text(
+                'narges.farahi_354@example.com',
+                style: TextStyle(color: Colors.white70, fontSize: 14),
+              ),
+            ],
+          ),
+        ),
+        Expanded(
+          child: ListView(
+            children: const [
+              ListTile(
+                leading: Icon(Icons.home),
+                title: Text('Home'),
+              ),
+              ListTile(
+                leading: Icon(Icons.favorite),
+                title: Text('Favorites'),
+              ),
+              ListTile(
+                leading: Icon(Icons.star),
+                title: Text('Stars'),
+              ),
+              ListTile(
+                leading: Icon(Icons.person),
+                title: Text('Profile'),
+              ),
+              ListTile(
+                leading: Icon(Icons.call),
+                title: Text('Call Us'),
+              ),
+              ListTile(
+                leading: Icon(Icons.settings),
+                title: Text('Settings'),
+              ),
+              Divider(),
+              ListTile(
+                leading: Icon(Icons.help),
+                title: Text('Help'),
+              ),
+              ListTile(
+                leading: Icon(Icons.logout),
+                title: Text('Log out'),
+              ),
+            ],
+          ),
+        ),
+      ],
+    ),
+  );
 }

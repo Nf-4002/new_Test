@@ -86,7 +86,7 @@ class Welcomescreen3 extends StatelessWidget {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => PopularCitiesPage(),
+                                builder: (context) => HomePage(),
                               ),
                             );
                           },

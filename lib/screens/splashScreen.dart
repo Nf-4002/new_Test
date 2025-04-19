@@ -1,32 +1,23 @@
+import 'package:afghan_backpack/constants/colors.dart';
 import 'package:afghan_backpack/screens/welcomeScreen1.dart';
 import 'package:flutter/material.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: Page1(),
-    debugShowCheckedModeBanner: false,
-  ));
-}
-
-class Page1 extends StatefulWidget {
-  const Page1({super.key});
+class Splashscreen extends StatefulWidget {
+  const Splashscreen({super.key});
 
   @override
-  Page1State createState() => Page1State();
+  State<Splashscreen> createState() => SplashScreenState();
 }
 
-class Page1State extends State<Page1> {
+class SplashScreenState extends State<Splashscreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(""),
-        backgroundColor: Color(0xFFB3E5FC),
-        elevation: 0,
-      ),
+      appBar: AppBar(title: const Text("")),
+
       body: SafeArea(
         child: Container(
-          color: const Color(0xFFB3E5FC),
+          color: kButtonBackgroundColor,
           width: double.infinity,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -35,9 +26,18 @@ class Page1State extends State<Page1> {
                 margin: const EdgeInsets.only(top: 50, bottom: 15),
                 height: 444,
                 width: double.infinity,
-                child: Image.asset(
-                  'images/bag.png', // Make sure this path matches the one in pubspec.yaml
-                  fit: BoxFit.cover,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+
+                  ],
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Image.asset(
+                    'images/bag.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
               const Padding(
@@ -45,7 +45,7 @@ class Page1State extends State<Page1> {
                 child: Text(
                   "Afghan Backpack",
                   style: TextStyle(
-                    color: Colors.black87,
+                    color: Colors.white,
                     fontSize: 40,
                     fontWeight: FontWeight.bold,
                   ),
@@ -56,22 +56,23 @@ class Page1State extends State<Page1> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(30),
                   ),
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 15),
+                  elevation: 5,
                 ),
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => Welcomescreen1()),
+                    MaterialPageRoute(builder: (context) => const Welcomescreen1()),
                   );
                 },
                 child: const Text(
                   "Get Started",
                   style: TextStyle(
                     fontSize: 18,
-                    color: Color(0xFF0D6EFD),
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
